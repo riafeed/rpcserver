@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>RPCのテスト</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    <!--
+    $(function() {
+      $('form').submit(function(){return false;});
+      $('#invoke').click(function() {
+        $.ajax({
+          url : 'http://gittest.riafeed.c9.io/',
+          type : 'POST',
+          contentType : 'application/json',
+          processData : false,
+          data : JSON.stringify({method: 'add', params:[parseInt($('#a').val()), parseInt($('#b').val())]}),
+          success : function(json){
+            if(json.error) {
+              $('#output').html('<span style="color:red;">' + json.error.message + '</span>');
+            } else {
+              $('#output').html(json.result);
+            }
+          }
+        });
+      });
+    });
+    //-->
+    </script>
+  </head>
+  <body>
+    <form>
+      <input type="text" id="a" size="3">＋<input type="text" id="b" size="3"><input type="submit" id="invoke" value="＝">
+    </form>
+    <div id="output">ここに答えを表示</div>
+  </body>
+</html>
