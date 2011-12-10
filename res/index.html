@@ -7,24 +7,13 @@
     <script type="text/javascript">
     <!--
     $(function() {
-      var hostpin = location.href.indexOf('/', 7);
-      var host = location.href.substring(0, hostpin);
-      var path = '/';
-
       $('form').submit(function(){return false;});
       $('#invoke').click(function() {
-        $.ajax({
-          url : host + path,
-          type : 'POST',
-          contentType : 'application/json',
-          processData : false,
-          data : JSON.stringify({method: 'add', params:[parseInt($('#a').val()), parseInt($('#b').val())]}),
-          success : function(json){
-            if(json.error) {
-              $('#output').html('<span style="color:red;">' + json.error.message + '</span>');
-            } else {
-              $('#output').html(json.result);
-            }
+        invoke(geturl('/'), 'add', [parseInt($('#a').val()), parseInt($('#b').val())], function(json) {
+          if(json.error) {
+            $('#output').html('<span style="color:red;">' + json.error.message + '</span>');
+          } else {
+            $('#output').html(json.result);
           }
         });
       });
