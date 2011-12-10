@@ -7,10 +7,14 @@
     <script type="text/javascript">
     <!--
     $(function() {
+      var hostpin = location.href.indexOf('/', 7);
+      var host = location.href.substring(0, hostpin);
+      var path = '/';
+
       $('form').submit(function(){return false;});
       $('#invoke').click(function() {
         $.ajax({
-          url : 'http://gittest.riafeed.c9.io/',
+          url : host + path,
           type : 'POST',
           contentType : 'application/json',
           processData : false,
