@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <title>RPCのテスト</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./lib/rpc.js"></script>
+    <script type="text/javascript" src="./lib/rpcclient.js"></script>
     <script type="text/javascript">
     <!--
     $(function() {
+      var rpcobj = null;
+      loadObject('/', function(obj) {rpcobj = obj;});
       $('form').submit(function(){return false;});
       $('#invoke').click(function() {
-        invoke(geturl('/'), 'add', [parseInt($('#a').val()), parseInt($('#b').val())], function(json) {
+//        invoke('/', 'add', [parseInt($('#a').val()), parseInt($('#b').val())], function(json) {
+        if(rpcobj === null) return;
+        rpcobj.add([parseInt($('#a').val()), parseInt($('#b').val())], function(json) {
           if(json.error) {
             $('#output').html('<span style="color:red;">' + json.error.message + '</span>');
           } else {
