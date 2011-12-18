@@ -8,6 +8,10 @@ var test = {
     //return a + b;
   },
   
+  add5 : function(success, a) {
+    success(a + 5);
+  },
+  
   _private : function(a, b) {
     return a + b;
   },
