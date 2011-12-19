@@ -12,7 +12,7 @@
       $('form').submit(function(){return false;});
       /*
       //非同期版
-      getRPCClient().loadObject('/', function(obj) {
+      $.getRPCClient().loadObject('/', function(obj) {
         var rpcobj = obj;
         $('#invoke').attr('disabled', false);
         $('#invoke').click(function() {
@@ -28,7 +28,7 @@
       });
       */
       //同期版
-      var rpcobj = getRPCClient().loadObject('/');
+      var rpcobj = $.getRPCClient().loadObject('/');
       $('#invoke').attr('disabled', false);
       $('#invoke').click(function() {
         var json = rpcobj.add(parseInt($('#a').val()), parseInt($('#b').val()));
