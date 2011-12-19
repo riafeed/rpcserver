@@ -1,12 +1,22 @@
-function getRPCClient() {
+/*
+ * JSON-RPCを処理するプロキシオブジェクトを作成するjQueryプラグイン
+ */
+(function($) {
+  var errdata = {jsonrpc:'2.0', error:{code:-32600, errmsg:'Invalid Request'}, id:null};
+  
+  /*
+   * JSON-RPCクライアントオブジェクト
+   */
   var rpcclient = {
+    //JSON-RPCをコールします
     invoke : function(url, method, callback, params) {
+      var retdata = null;
+      var async = true;
+      
       if (!url.match(/^https?:\/\//i)) {
         url = this.geturl(url);
       }
       
-      var retdata = null;
-      var async = true;
       if(typeof callback !== 'function') async = false;
       
       jQuery.ajax({
@@ -17,10 +27,24 @@ function getRPCClient() {
         data : JSON.stringify({method: method, params: params}),
         async : async,
         success : function(data) {
+          if(typeof data === 'string') {
+            try {
+              data = JSON.parse(data);
+            } catch(e) {
+              data = errdata;
+            }
+          }
           if (async) {
             callback(data);
           } else {
             retdata = data;
+          }
+        },
+        error : function() {
+          if (async) {
+            callback(errdata);
+          } else {
+            retdata = errdata;
           }
         }
       });
@@ -28,6 +52,7 @@ function getRPCClient() {
       return retdata;
     },
 
+    //argumentオブジェクトを使ってJSON-RPCをコールします
     invokearg : function(url, method, args) {
       var params = [];
       var callback = null;
@@ -39,6 +64,7 @@ function getRPCClient() {
       return this._invoke(url, method, callback, params);
     },
 
+    //現在のホストからフルURLを生成します
     geturl : function(path) {
       var hostpin = location.href.indexOf('/', 7);
       var host = location.href.substring(0, hostpin);
@@ -46,14 +72,16 @@ function getRPCClient() {
       return host + path;
     },
 
+    //サーバーから取得した関数リストを基にプロキシオブジェクトを生成します
     loadObject : function(url, callback) {
+      var retdata = null;
+      var async = true;
+      var self = this;
+
       if (!url.match(/^https?:\/\//i)) {
         url = this.geturl(url);
       }
       
-      var retdata = null;
-      var async = true;
-      var self = this;
       if(typeof callback !== 'function') async = false;
     
       jQuery.ajax({
@@ -78,6 +106,10 @@ function getRPCClient() {
             }
           }
           if(async) callback(retdata);
+        },
+        error : function() {
+          retdata = null;
+          if(async) callback(null);
         }
       });
       
@@ -85,5 +117,8 @@ function getRPCClient() {
     }
   };
   
-  return rpcclient;
-}
+  //JSON-RPCクライアントオブジェクトを取得します
+  $.getRPCClient = function() {
+    return rpcclient;
+  };
+})(jQuery);
