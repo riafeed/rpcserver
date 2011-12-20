@@ -22,6 +22,6 @@ var test = {
   }
 };
 
-server.addObject('/', test);
+server.setObject('/', test);
 
 server.listen(port);
