@@ -2,7 +2,7 @@
  * JSON-RPCを処理するプロキシオブジェクトを作成するjQueryプラグイン
  */
 (function($) {
-  var errdata = {jsonrpc:'2.0', error:{code:-32600, errmsg:'Invalid Request'}, id:null};
+  var errdata = {jsonrpc : '2.0', error : {code : -32600, errmsg : 'Invalid Request'}, id:null};
   
   /*
    * JSON-RPCクライアントオブジェクト
@@ -17,7 +17,7 @@
         url = rpcclient.getURL(url);
       }
       
-      if(typeof callback !== 'function') async = false;
+      if (typeof callback !== 'function') async = false;
       
       jQuery.ajax({
         url : url,
@@ -27,7 +27,7 @@
         data : JSON.stringify({method: method, params: params}),
         async : async,
         success : function(data) {
-          if(typeof data === 'string') {
+          if (typeof data === 'string') {
             try {
               data = JSON.parse(data);
             } catch(e) {
@@ -57,7 +57,7 @@
       var params = [];
       var callback = null;
       params.push.apply(params, args);
-      if(typeof params[0] === 'function') {
+      if (typeof params[0] === 'function') {
         callback = params[0];
         params.shift();
       }
@@ -82,7 +82,7 @@
         url = rpcclient.getURL(url);
       }
       
-      if(typeof callback !== 'function') async = false;
+      if (typeof callback !== 'function') async = false;
     
       jQuery.ajax({
         url : url + 'list.json',
@@ -99,17 +99,17 @@
             } else {
               obj._invoke = self.invoke;
               obj._invokeArg = self.invokeArg;
-              for(var i = 0; i < json.result.length; i++) {
+              for (var i = 0; i < json.result.length; i++) {
                 obj[json.result[i]] = new Function('callback', 'return this._invokeArg("' + url + '", "' + json.result[i] + '", arguments);');
               }
               retdata = obj;
             }
           }
-          if(async) callback(retdata);
+          if (async) callback(retdata);
         },
         error : function() {
           retdata = null;
-          if(async) callback(null);
+          if (async) callback(null);
         }
       });
       

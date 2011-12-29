@@ -32,6 +32,7 @@
       $('#invoke').attr('disabled', false);
       $('#invoke').click(function() {
         var json = rpcobj.add(parseInt($('#a').val()), parseInt($('#b').val()));
+        //var json = rpcobj.add5();
         if(json.error) {
           $('#output').html('<span style="color:red;">' + json.error.message + '</span>');
         } else {
